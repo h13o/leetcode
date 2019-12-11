@@ -37,27 +37,30 @@ class Solution
 public:
     int numSquares(int n)
     {
-        int max_square{};
-        while (n >= pow(max_square + 1, 2))
-            max_square++;
-        int min_count{INT_MAX};
-        for (int i = 1; i <= max_square; i++)
+        vector<int> ans(n);
+        vector<int> sqs;
+        queue<int> que;
+        for (int i = 1; i <= (int)sqrt(n); i++)
         {
-            int temp{n};
-            int count{};
-            for (int j = i; j > 0; j--)
-            {
-                int jj = j * j;
-                if (temp - jj >= 0)
-                {
-                    int times{temp / jj};
-                    temp -= jj * times;
-                    count += times;
+            sqs.push_back(i * i);
+            ans[i * i - 1] = 1;
+            if (i * i == n)
+                return 1;
+            que.push(i * i - 1);
+        }
+        while (!que.empty())
+        {
+            int index = que.front();
+            que.pop();
+            for (auto i : sqs){
+                if (index+i < n && ans[index +i] == 0){
+                    ans[index+i] = ans[index] + 1;
+                    if (index + i == n-1) return ans.back();
+                    que.push(index+i);
                 }
             }
-            min_count = min(min_count, count);
         }
-        return min_count;
+        return ans.back();
     }
 };
 // @lc code=end

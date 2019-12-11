@@ -50,7 +50,11 @@ public:
     {
         if (!node)
             return true;
-        if (!node->right && !node->left || !node->right && rec(node->left, count) && node->val == node->left->val || !node->left && rec(node->right, count) && node->val == node->right->val || rec(node->left, count) && rec(node->right, count) && node->left->val == node->val && node->right->val == node->val)
+        bool l = rec(node->left, count);
+        bool r = rec(node->right, count);
+        if (!l || !r)
+            return false;
+        if ((!node->right || node->right->val == node->val) && (!node->left || node->left->val == node->val))
         {
             count++;
             return true;
