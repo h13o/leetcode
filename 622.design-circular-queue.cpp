@@ -73,32 +73,25 @@
 // @lc code=start
 class MyCircularQueue
 {
-    int maxSize;
-    int h{0};
-    int t{-1};
-    vector<int> q;
+    vector<int> cq;
+    int f{}, r{}, size;
 
 public:
     /** Initialize your data structure here. Set the size of the queue to be k. */
     MyCircularQueue(int k)
     {
-        maxSize = k;
-        q = vector<int>(maxSize, -1);
+        size = k;
+        cq = vector<int>(k, -1);
     }
 
     /** Insert an element into the circular queue. Return true if the operation is successful. */
     bool enQueue(int value)
     {
-        if (isEmpty())
-        {
-            t = h;
-            q[h] = value;
-            return true;
-        }
         if (isFull())
             return false;
-        t = t == maxSize - 1 ? 0 : t + 1;
-        q[t] = value;
+        if (cq[r] != -1)
+            r = (r + 1) % size;
+        cq[r] = value;
         return true;
     }
 
@@ -107,43 +100,34 @@ public:
     {
         if (isEmpty())
             return false;
-        if (t == h)
-        {
-            q[h] = -1;
-            t = -1;
-            return true;
-        }
-        q[h] = -1;
-        h = h == maxSize - 1 ? 0 : h + 1;
+        cq[f] = -1;
+        if (f != r)
+            f = (f + 1) % size;
         return true;
     }
 
     /** Get the front item from the queue. */
     int Front()
     {
-        if (isEmpty())
-            return -1;
-        return q[h];
+        return cq[f];
     }
 
     /** Get the last item from the queue. */
     int Rear()
     {
-        if (isEmpty())
-            return -1;
-        return q[t];
+        return cq[r];
     }
 
     /** Checks whether the circular queue is empty or not. */
     bool isEmpty()
     {
-        return t == -1 ? true : false;
+        return cq[f] == -1;
     }
 
     /** Checks whether the circular queue is full or not. */
     bool isFull()
     {
-        return !isEmpty() && (t + 1) % maxSize == h ? true : false;
+        return (r + 1) % size == f;
     }
 };
 

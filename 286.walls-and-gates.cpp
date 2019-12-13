@@ -50,47 +50,86 @@
  */
 
 // @lc code=start
+// Dec 13th, 2019
 class Solution
 {
+    int mx[4] = {1, 0, -1, 0};
+    int my[4] = {0, 1, 0, -1};
+
 public:
     void wallsAndGates(vector<vector<int>> &rooms)
     {
-        vector<int> mx{1, 0, -1, 0};
-        vector<int> my{0, 1, 0, -1};
-        int m{rooms.size()};
-        if (m == 0)
+        int M = rooms.size();
+        if (!M)
             return;
-        int n{rooms[0].size()};
-        queue<pair<int, int>> gates;
-        for (size_t i = 0; i < m; i++)
+        int N = rooms[0].size();
+        queue<int> qx, qy;
+        for (int i = 0; i < M; i++)
         {
-            for (size_t j = 0; j < n; j++)
+            for (int j = 0; j < N; j++)
             {
                 if (rooms[i][j] == 0)
-                    gates.push(make_pair(i, j));
+                {
+                    qx.push(i);
+                    qy.push(j);
+                }
             }
         }
-        while (!gates.empty())
+        while (!qx.empty())
         {
-            queue<pair<int, int>> ap; // avaialable_place
-            ap.push(gates.front());
-            gates.pop();
-            while (!ap.empty())
+            int x{qx.front()}, y{qy.front()};
+            qx.pop();
+            qy.pop();
+            for (int i = 0; i < 4; i++)
             {
-                pair<int, int> p = ap.front();
-                ap.pop();
-                for (int i = 0; i < 4; i++)
-                {
-                    int nx{p.first + mx[i]};
-                    int ny{p.second + my[i]};
-                    if (0 <= nx && nx < m && 0 <= ny && ny < n && rooms[nx][ny] > rooms[p.first][p.second] + 1)
-                    {
-                        rooms[nx][ny] = rooms[p.first][p.second] + 1;
-                        ap.push(make_pair(nx, ny));
-                    }
-                }
+                int nx{x + mx[i]}, ny{y + my[i]};
+                if (nx < 0 || M <= nx || ny < 0 || N <= ny || rooms[nx][ny] != INT_MAX)
+                    continue;
+                rooms[nx][ny] = rooms[x][y] + 1;
+                qx.push(nx);
+                qy.push(ny);
             }
         }
     }
 };
 // @lc code=end
+
+// void wallsAndGates(vector<vector<int>> &rooms)
+// {
+//     vector<int> mx{1, 0, -1, 0};
+//     vector<int> my{0, 1, 0, -1};
+//     int m{rooms.size()};
+//     if (m == 0)
+//         return;
+//     int n{rooms[0].size()};
+//     queue<pair<int, int>> gates;
+//     for (size_t i = 0; i < m; i++)
+//     {
+//         for (size_t j = 0; j < n; j++)
+//         {
+//             if (rooms[i][j] == 0)
+//                 gates.push(make_pair(i, j));
+//         }
+//     }
+//     while (!gates.empty())
+//     {
+//         queue<pair<int, int>> ap; // avaialable_place
+//         ap.push(gates.front());
+//         gates.pop();
+//         while (!ap.empty())
+//         {
+//             pair<int, int> p = ap.front();
+//             ap.pop();
+//             for (int i = 0; i < 4; i++)
+//             {
+//                 int nx{p.first + mx[i]};
+//                 int ny{p.second + my[i]};
+//                 if (0 <= nx && nx < m && 0 <= ny && ny < n && rooms[nx][ny] > rooms[p.first][p.second] + 1)
+//                 {
+//                     rooms[nx][ny] = rooms[p.first][p.second] + 1;
+//                     ap.push(make_pair(nx, ny));
+//                 }
+//             }
+//         }
+//     }
+// }

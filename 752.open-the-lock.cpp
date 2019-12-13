@@ -87,34 +87,39 @@ class Solution
 public:
     int openLock(vector<string> &deadends, string target)
     {
-        vector<int> dv(10000, INT_MAX); //distance_vector
-        dv[stoi(target)] = 0;
-        for (string d : deadends)
-            dv[stoi(d)] = -1;
-        queue<string> q;
-        q.push(target);
-        while (!q.empty())
+        vector<int> data(10000, -1);
+        data[0] = 0;
+        for (auto d : deadends)
         {
-            string s = q.front();
-            q.pop();
+            if (d == "0000")
+                return -1;
+            data[stoi(d)] = INT_MIN;
+        }
+        queue<string> que;
+        que.push("0000");
+        while (!que.empty())
+        {
+            string s = que.front();
+            que.pop();
             for (int i = 0; i < 4; i++)
             {
-                for (int j = 0; j < 2; j++)
+                for (int j : {1, -1})
                 {
-                    string ns = s;
-                    if (j == 0)
-                        ns[i] = (ns[i] + 1 - '0') % 10 + '0';
-                    else
-                        ns[i] = (ns[i] + 9 - '0') % 10 + '0';
-                    if (dv[stoi(ns)] == INT_MAX)
+                    int dgt = (int)s[i] - (int)'0';
+                    dgt = (dgt + j + 10) % 10;
+                    string t = s;
+                    t[i] = (char)(dgt + (int)'0');
+                    if (data[stoi(t)] == -1)
                     {
-                        dv[stoi(ns)] = dv[stoi(s)] + 1;
-                        q.push(ns);
+                        if (t == target)
+                            return data[stoi(s)] + 1;
+                        data[stoi(t)] = data[stoi(s)] + 1;
+                        que.push(t);
                     }
                 }
             }
         }
-        return dv[0] == INT_MAX ? -1 : dv[0];
+        return data[stoi(target)];
     }
 };
 // @lc code=end

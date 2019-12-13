@@ -31,32 +31,31 @@
  */
 
 // @lc code=start
+// Dec 13th, Dec, 2019
 class MovingAverage
 {
+    queue<int> que;
+    int q_size;
+    double sum;
+
 public:
     /** Initialize your data structure here. */
-    queue<int> q;
-    int max_size;
     MovingAverage(int size)
     {
-        max_size = size;
+        q_size = size;
+        sum = 0;
     }
 
     double next(int val)
     {
-        if (q.size() == max_size)
-            q.pop();
-        q.push(val);
-        int count{};
-        double sum{};
-        queue<int> q2 = q;
-        while (!q2.empty())
+        if (que.size() == q_size)
         {
-            sum += q2.front();
-            q2.pop();
-            count++;
+            sum -= que.front();
+            que.pop();
         }
-        return sum / count;
+        que.push(val);
+        sum += val;
+        return sum / que.size();
     }
 };
 
@@ -66,3 +65,32 @@ public:
  * double param_1 = obj->next(val);
  */
 // @lc code=end
+// Dec, 10th, 2019
+// class MovingAverage
+// {
+// public:
+//     /** Initialize your data structure here. */
+//     queue<int> q;
+//     int max_size;
+//     MovingAverage(int size)
+//     {
+//         max_size = size;
+//     }
+
+//     double next(int val)
+//     {
+//         if (q.size() == max_size)
+//             q.pop();
+//         q.push(val);
+//         int count{};
+//         double sum{};
+//         queue<int> q2 = q;
+//         while (!q2.empty())
+//         {
+//             sum += q2.front();
+//             q2.pop();
+//             count++;
+//         }
+//         return sum / count;
+//     }
+// };
