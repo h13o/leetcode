@@ -43,21 +43,44 @@
  */
 class Solution
 {
-    vector<int> v;
-
 public:
-    void helper(TreeNode *root)
-    {
-        if (!root)
-            return;
-        helper(root->left);
-        v.push_back(root->val);
-        helper(root->right);
-    }
     vector<int> inorderTraversal(TreeNode *root)
     {
-        helper(root);
-        return v;
+        vector<int> ans;
+        stack<TreeNode*> stk;
+        if (!root) return ans;
+        TreeNode *temp = root;
+        while (!stk.empty() || temp){
+            while(temp){
+                stk.push(temp);
+                temp = temp->left;
+            }
+            temp = stk.top();
+            ans.push_back(temp->val);
+            stk.pop();
+            temp = temp->right;
+        }
+        return ans;
     }
 };
 // @lc code=end
+
+// class Solution
+// {
+//     vector<int> v;
+
+// public:
+//     void helper(TreeNode *root)
+//     {
+//         if (!root)
+//             return;
+//         helper(root->left);
+//         v.push_back(root->val);
+//         helper(root->right);
+//     }
+//     vector<int> inorderTraversal(TreeNode *root)
+//     {
+//         helper(root);
+//         return v;
+//     }
+// };

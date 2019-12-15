@@ -50,7 +50,7 @@
 // @lc code=start
 class MyQueue
 {
-    stack<int> stk;
+    stack<int> stk1, stk2;
 
 public:
     /** Initialize your data structure here. */
@@ -61,50 +61,35 @@ public:
     /** Push element x to the back of queue. */
     void push(int x)
     {
-        stk.push(x);
+        stk1.push(x);
     }
 
     /** Removes the element from in front of queue and returns that element. */
     int pop()
     {
-        stack<int> temp_stk;
-        while (!stk.empty())
-        {
-            temp_stk.push(stk.top());
-            stk.pop();
-        }
-        int v = temp_stk.top();
-        temp_stk.pop();
-        while (!temp_stk.empty())
-        {
-            stk.push(temp_stk.top());
-            temp_stk.pop();
-        }
+        int v = peek();
+        stk2.pop();
         return v;
     }
 
     /** Get the front element. */
     int peek()
     {
-        stack<int> temp_stk;
-        while (!stk.empty())
+        if (stk2.empty())
         {
-            temp_stk.push(stk.top());
-            stk.pop();
+            while (!stk1.empty())
+            {
+                stk2.push(stk1.top());
+                stk1.pop();
+            }
         }
-        int v = temp_stk.top();
-        while (!temp_stk.empty())
-        {
-            stk.push(temp_stk.top());
-            temp_stk.pop();
-        }
-        return v;
+        return stk2.top();
     }
 
     /** Returns whether the queue is empty. */
     bool empty()
     {
-        return stk.empty();
+        return stk1.empty() && stk2.empty();
     }
 };
 

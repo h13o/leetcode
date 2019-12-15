@@ -81,21 +81,40 @@ class Solution
 public:
     bool hasCycle(ListNode *head)
     {
-        ListNode *n1{head}, *n2{head};
-        int times{0};
-        while (++times)
+        ListNode *wker(head), *rner(head);
+        while (true)
         {
-            for (int i = 0; i < times; i++)
-            {
-                if (!n2)
-                    return false;
-                n2 = n2->next;
-                if (n2 == n1)
-                    return true;
-            }
-            n1 = n2;
+            if (!rner || !rner->next)
+                return false;
+            rner = rner->next->next;
+            wker = wker->next;
+            if (rner == wker)
+                break;
         }
         return true;
     }
 };
 // @lc code=end
+
+// class Solution
+// {
+// public:
+//     bool hasCycle(ListNode *head)
+//     {
+//         ListNode *n1{head}, *n2{head};
+//         int times{0};
+//         while (++times)
+//         {
+//             for (int i = 0; i < times; i++)
+//             {
+//                 if (!n2)
+//                     return false;
+//                 n2 = n2->next;
+//                 if (n2 == n1)
+//                     return true;
+//             }
+//             n1 = n2;
+//         }
+//         return true;
+//     }
+// };

@@ -59,7 +59,7 @@ public:
         if (K == 1 && N == 1)
             return 0;
         int i = kthGrammar(N - 1, (K + 1) / 2);
-        if (i && !K % 2 || !i && K % 2)
+        if (i && !(K % 2) || !i && K % 2)
             return 0;
         return 1;
     }

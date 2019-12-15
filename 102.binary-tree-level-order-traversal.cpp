@@ -54,24 +54,46 @@ class Solution
 public:
     vector<vector<int>> levelOrder(TreeNode *root)
     {
-        vector<vector<int>> ans;
-        queue<pair<TreeNode *, int>> node_queue;
+        vector<vector<int>> vv;
+        helper(root, vv, 0);
+        return vv;
+    }
+
+    void helper(TreeNode *root, vector<vector<int>> &vv, int level)
+    {
         if (!root)
-            return ans;
-        node_queue.push(make_pair(root, 0));
-        while (!node_queue.empty())
-        {
-            pair<TreeNode *, int> node_pair{node_queue.front()};
-            node_queue.pop();
-            if (node_pair.second == ans.size())
-                ans.push_back(vector<int>());
-            ans[node_pair.second].push_back(node_pair.first->val);
-            if (node_pair.first->left)
-                node_queue.push(make_pair(node_pair.first->left, node_pair.second + 1));
-            if (node_pair.first->right)
-                node_queue.push(make_pair(node_pair.first->right, node_pair.second + 1));
-        }
-        return ans;
+            return;
+        if (vv.size() == level)
+            vv.push_back(vector<int>());
+        vv[level].push_back(root->val);
+        helper(root->left, vv, level + 1);
+        helper(root->right, vv, level + 1);
     }
 };
 // @lc code=end
+
+// class Solution
+// {
+// public:
+//     vector<vector<int>> levelOrder(TreeNode *root)
+//     {
+//         vector<vector<int>> ans;
+//         queue<pair<TreeNode *, int>> node_queue;
+//         if (!root)
+//             return ans;
+//         node_queue.push(make_pair(root, 0));
+//         while (!node_queue.empty())
+//         {
+//             pair<TreeNode *, int> node_pair{node_queue.front()};
+//             node_queue.pop();
+//             if (node_pair.second == ans.size())
+//                 ans.push_back(vector<int>());
+//             ans[node_pair.second].push_back(node_pair.first->val);
+//             if (node_pair.first->left)
+//                 node_queue.push(make_pair(node_pair.first->left, node_pair.second + 1));
+//             if (node_pair.first->right)
+//                 node_queue.push(make_pair(node_pair.first->right, node_pair.second + 1));
+//         }
+//         return ans;
+//     }
+// };

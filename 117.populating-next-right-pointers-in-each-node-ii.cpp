@@ -86,33 +86,23 @@ class Solution
 public:
     Node *connect(Node *root)
     {
-        helper(root);
+        vector<Node *> right_node;
+        find_next(root, 0, right_node);
         return root;
     }
-    void helper(Node *root)
+    void find_next(Node *root, int level, vector<Node *> &right_node)
     {
-        if (!root || !root->left && !root->right)
+        if (!root)
             return;
-        if (root->left && root->right)
-            root->left->next = root->right;
-        Node *temp{root->next};
-        Node *temp2{root->right ? root->right : root->left};
-        while (temp)
+        if (level == right_node.size())
+            right_node.push_back(root);
+        else
         {
-            if (temp->left)
-            {
-                temp2->next = temp->left;
-                break;
-            }
-            if (temp->right)
-            {
-                temp2->next = temp->right;
-                break;
-            }
-            temp = temp->next;
+            right_node[level]->next = root;
+            right_node[level] = root;
         }
-        helper(root->left);
-        helper(root->right);
+        find_next(root->left, level + 1, right_node);
+        find_next(root->right, level + 1, right_node);
     }
 };
 // @lc code=end
