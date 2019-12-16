@@ -44,42 +44,40 @@ class Solution
 public:
     string decodeString(string s)
     {
-        while (find(s.begin(), s.end(), '[') != s.end())
+        int num{};
+        string str;
+        int i = 0;
+        while (i < s.size())
         {
-            int left{-1}, l{-1}, multi;
-            cout << s << endl;
-            for (size_t i = 0; i < s.size(); i++)
+            if (isdigit(s[i]))
             {
-                if (s[i] == '[')
-                {
-                    left = l = i;
-                    multi = 0;
-                    while (left > 0)
-                    {
-                        int c = s[--left];
-                        int num = c - int('0');
-                        cout << num << endl;
-                        if (num < 0 && num > 9)
-                            break;
-                        multi *= 10;
-                        multi += num;
-                    }
-                }
-                if (s[i] == ']')
-                {
-                    string t;
-                    if (l - to_string(multi).size())
-                        t = s.substr(0, l - to_string(multi).size());
-                    for (int k = 0; k < multi; k++)
-                        t += s.substr(l + 1, i - (l + 1));
-                    t += s.substr(i + 1);
-                    cout << t << endl;
-                    s = t;
-                    break;
-                }
+                num *= 10;
+                num += (int)s[i++] - (int)'0';
+                continue;
             }
+            if (s[i] == '[')
+            {
+                int idx{i + 1}, inner{1};
+                while (i++)
+                {
+                    if (s[i] == '[')
+                        inner++;
+                    if (s[i] == ']')
+                        inner--;
+                    if (!inner)
+                        break;
+                }
+                while (num)
+                {
+                    num--;
+                    str += decodeString(s.substr(idx, i - idx));
+                }
+                i++;
+                continue;
+            }
+            str += s[i++];
         }
-        return s;
+        return str;
     }
 };
 // @lc code=end

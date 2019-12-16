@@ -66,45 +66,85 @@ class Solution
 public:
     vector<vector<int>> updateMatrix(vector<vector<int>> &matrix)
     {
-        int mx[4] = {1, 0, -1, 0};
-        int my[4] = {0, 1, 0, -1};
-        size_t M{matrix.size()}, N{matrix[0].size()};
-        queue<pair<int, int>> que1, que2;
-        for (auto i = 0; i < M; i++)
+        int mv[5] = {0, 1, 0, -1, 0}, M(matrix.size()), N(matrix[0].size());
+        queue<pair<int, int>> que;
+        for (int i = 0; i < M; i++)
         {
-            for (auto j = 0; j < N; j++)
+            for (int j = 0; j < N; j++)
             {
                 if (matrix[i][j])
-                    que2.push(make_pair(i, j));
+                    que.push(make_pair(i, j));
             }
         }
-        while (!que2.empty())
+        while (!que.empty())
         {
-            que1 = que2;
-            queue<pair<int, int>> que_empty;
-            swap(que2, que_empty);
-            while (!que1.empty())
+            bool check{true};
+            int x{que.front().first},
+                y{que.front().second};
+            que.pop();
+            for (int i = 0; i < 4; i++)
             {
-                int x = que1.front().first;
-                int y = que1.front().second;
-                que1.pop();
-                bool check{true};
-                for (int i = 0; i < 4; i++)
+                if (0 <= x + mv[i] && x + mv[i] < M && 0 <= y + mv[i + 1] && y + mv[i + 1] < N &&
+                    matrix[x][y] > matrix[x + mv[i]][y + mv[i + 1]])
                 {
-                    if (0 <= x + mx[i] && x + mx[i] < M && 0 <= y + my[i] && y + my[i] < N)
-                    {
-                        if (matrix[x + mx[i]][y + my[i]] == matrix[x][y] - 1)
-                            check = false;
-                    }
+                    check = false;
+                    break;
                 }
-                if (check)
-                {
-                    matrix[x][y]++;
-                    que2.push(make_pair(x, y));
-                }
+            }
+            if (check)
+            {
+                matrix[x][y]++;
+                que.push(make_pair(x, y));
             }
         }
         return matrix;
     }
 };
 // @lc code=end
+
+// class Solution
+// {
+// public:
+//     vector<vector<int>> updateMatrix(vector<vector<int>> &matrix)
+//     {
+//         int mx[4] = {1, 0, -1, 0};
+//         int my[4] = {0, 1, 0, -1};
+//         size_t M{matrix.size()}, N{matrix[0].size()};
+//         queue<pair<int, int>> que1, que2;
+//         for (auto i = 0; i < M; i++)
+//         {
+//             for (auto j = 0; j < N; j++)
+//             {
+//                 if (matrix[i][j])
+//                     que2.push(make_pair(i, j));
+//             }
+//         }
+//         while (!que2.empty())
+//         {
+//             que1 = que2;
+//             queue<pair<int, int>> que_empty;
+//             swap(que2, que_empty);
+//             while (!que1.empty())
+//             {
+//                 int x = que1.front().first;
+//                 int y = que1.front().second;
+//                 que1.pop();
+//                 bool check{true};
+//                 for (int i = 0; i < 4; i++)
+//                 {
+//                     if (0 <= x + mx[i] && x + mx[i] < M && 0 <= y + my[i] && y + my[i] < N)
+//                     {
+//                         if (matrix[x + mx[i]][y + my[i]] == matrix[x][y] - 1)
+//                             check = false;
+//                     }
+//                 }
+//                 if (check)
+//                 {
+//                     matrix[x][y]++;
+//                     que2.push(make_pair(x, y));
+//                 }
+//             }
+//         }
+//         return matrix;
+//     }
+// };

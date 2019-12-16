@@ -51,30 +51,56 @@
 // @lc code=start
 class Solution
 {
-    vector<vector<int>> dp = vector<vector<int>>(21, vector<int>(2010));
 
 public:
     int findTargetSumWays(vector<int> &nums, int S)
     {
-        dp[0][1005] = 1;
-        for (size_t i = 0; i < nums.size(); i++)
-        {
-            for (int j = 0; j < 2010; j++)
-            {
-                if (dp[i][j] == 0)
-                    continue;
-                if (j + nums[i] < 2010)
-                    dp[i + 1][j + nums[i]] += dp[i][j];
-                if (0 <= j - nums[i])
-                    dp[i + 1][j - nums[i]] += dp[i][j];
-            }
-        }
-        if (S > 1000)
+        if (S > 1000 || S < -1000)
             return 0;
-        return dp[nums.size()][S + 1005];
+        vector<int> dp(2001), ndp(2001);
+        dp[1000] = 1;
+        for (int i = 0; i < nums.size(); i++)
+        {
+            for (int j = 0; j < 2001; j++)
+            {
+                if (dp[j])
+                {
+                    ndp[j + nums[i]] += dp[j];
+                    ndp[j - nums[i]] += dp[j];
+                }
+            }
+            dp = ndp;
+            ndp = vector<int>(2001);
+        }
+        return dp[1000 + S];
     }
 };
 // @lc code=end
+// class Solution
+// {
+//     vector<vector<int>> dp = vector<vector<int>>(21, vector<int>(2010));
+
+// public:
+//     int findTargetSumWays(vector<int> &nums, int S)
+//     {
+//         dp[0][1005] = 1;
+//         for (size_t i = 0; i < nums.size(); i++)
+//         {
+//             for (int j = 0; j < 2010; j++)
+//             {
+//                 if (dp[i][j] == 0)
+//                     continue;
+//                 if (j + nums[i] < 2010)
+//                     dp[i + 1][j + nums[i]] += dp[i][j];
+//                 if (0 <= j - nums[i])
+//                     dp[i + 1][j - nums[i]] += dp[i][j];
+//             }
+//         }
+//         if (S > 1000)
+//             return 0;
+//         return dp[nums.size()][S + 1005];
+//     }
+// };
 
 // Memory Limit Exceeded
 // class Solution

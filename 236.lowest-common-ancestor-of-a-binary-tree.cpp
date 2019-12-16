@@ -64,28 +64,49 @@
  */
 class Solution
 {
-    TreeNode *ans{nullptr};
-
 public:
     TreeNode *lowestCommonAncestor(TreeNode *root, TreeNode *p, TreeNode *q)
     {
-        rec(root, p, q);
-        return ans;
-    }
-    pair<bool, bool> rec(TreeNode *node, TreeNode *p, TreeNode *q)
-    {
-        if (!node)
-            return make_pair(false, false);
-        auto l = rec(node->left, p, q);
-        auto r = rec(node->right, p, q);
-        bool pe{l.first || r.first}, qe{l.second || r.second};
-        if (pe || node == p)
-            pe = true;
-        if (qe || node == q)
-            qe = true;
-        if (!ans && pe && qe)
-            ans = node;
-        return make_pair(pe, qe);
+        if (!root)
+            return nullptr;
+        TreeNode *left{lowestCommonAncestor(root->left, p, q)};
+        TreeNode *right{lowestCommonAncestor(root->right, p, q)};
+        if (left && right)
+            return root;
+        if (root == p || root == q)
+            return root;
+        if (left)
+            return left;
+        if (right)
+            return right;
+        return nullptr;
     }
 };
 // @lc code=end
+
+// class Solution
+// {
+//     TreeNode *ans{nullptr};
+
+// public:
+//     TreeNode *lowestCommonAncestor(TreeNode *root, TreeNode *p, TreeNode *q)
+//     {
+//         rec(root, p, q);
+//         return ans;
+//     }
+//     pair<bool, bool> rec(TreeNode *node, TreeNode *p, TreeNode *q)
+//     {
+//         if (!node)
+//             return make_pair(false, false);
+//         auto l = rec(node->left, p, q);
+//         auto r = rec(node->right, p, q);
+//         bool pe{l.first || r.first}, qe{l.second || r.second};
+//         if (pe || node == p)
+//             pe = true;
+//         if (qe || node == q)
+//             qe = true;
+//         if (!ans && pe && qe)
+//             ans = node;
+//         return make_pair(pe, qe);
+//     }
+// };
