@@ -50,25 +50,50 @@ class Solution
 public:
     TreeNode *buildTree(vector<int> &preorder, vector<int> &inorder)
     {
-        int idx{};
-        return rec(preorder, inorder, idx, 0, preorder.size());
+        int pre{};
+        return preorder.size() ? rec(preorder, inorder, 0, preorder.size(), pre) : nullptr;
     }
-    TreeNode *rec(vector<int> &preorder, vector<int> &inorder, int &idx, int st, int ed)
+    TreeNode *rec(vector<int> &preorder, vector<int> &inorder, int is, int ie, int &pre)
     {
-        if (st == ed)
-            return nullptr;
-        TreeNode *root = new TreeNode(preorder[idx]);
-        for (int i = st; i < ed; i++)
+        int idx;
+        for (idx = is; idx < ie; idx++)
         {
-            if (inorder[i] == preorder[idx])
-            {
-                idx++;
-                root->left = rec(preorder, inorder, idx, st, i);
-                root->right = rec(preorder, inorder, idx, i + 1, ed);
+            if (inorder[idx] == preorder[pre])
                 break;
-            }
         }
-        return root;
+        TreeNode *temp = new TreeNode(preorder[pre++]);
+        if (is < idx)
+            temp->left = rec(preorder, inorder, is, idx, pre);
+        if (idx + 1 < ie)
+            temp->right = rec(preorder, inorder, idx + 1, ie, pre);
+        return temp;
     }
 };
 // @lc code=end
+
+// class Solution
+// {
+// public:
+//     TreeNode *buildTree(vector<int> &preorder, vector<int> &inorder)
+//     {
+//         int idx{};
+//         return rec(preorder, inorder, idx, 0, preorder.size());
+//     }
+//     TreeNode *rec(vector<int> &preorder, vector<int> &inorder, int &idx, int st, int ed)
+//     {
+//         if (st == ed)
+//             return nullptr;
+//         TreeNode *root = new TreeNode(preorder[idx]);
+//         for (int i = st; i < ed; i++)
+//         {
+//             if (inorder[i] == preorder[idx])
+//             {
+//                 idx++;
+//                 root->left = rec(preorder, inorder, idx, st, i);
+//                 root->right = rec(preorder, inorder, idx, i + 1, ed);
+//                 break;
+//             }
+//         }
+//         return root;
+//     }
+// };

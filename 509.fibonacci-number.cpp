@@ -61,19 +61,58 @@
 // @lc code=start
 class Solution
 {
-    unordered_map<int, int> memo;
+    unordered_map<int, int> map;
 
 public:
     int fib(int N)
     {
-        if (N == 0)
-            return 0;
-        if (N == 1)
-            return 1;
-        if (memo.find(N) != memo.end())
-            return memo[N];
-        memo[N] = fib(N - 1) + fib(N - 2);
-        return memo[N];
+        if (N < 2)
+            return N;
+        int curr(1), prev(0), temp;
+        for (int i = 1; i < N; i++)
+        {
+            temp = curr;
+            curr += prev;
+            prev = temp;
+        }
+        return curr;
     }
 };
 // @lc code=end
+
+// class Solution
+// {
+//     unordered_map<int, int> memo;
+
+// public:
+//     int fib(int N)
+//     {
+//         if (N == 0)
+//             return 0;
+//         if (N == 1)
+//             return 1;
+//         if (memo.find(N) != memo.end())
+//             return memo[N];
+//         memo[N] = fib(N - 1) + fib(N - 2);
+//         return memo[N];
+//     }
+// };
+
+// class Solution
+// {
+
+// public:
+//     int fib(int N)
+//     {
+//         if (N < 2)
+//             return N;
+//         int curr(1), prev(0), temp;
+//         for (int i = 1; i < N; i++)
+//         {
+//             temp = curr;
+//             curr += prev;
+//             prev = temp;
+//         }
+//         return curr;
+//     }
+// };

@@ -41,13 +41,27 @@ class Solution
 public:
     vector<int> getRow(int rowIndex)
     {
-        if (rowIndex == 0)
-            return {1};
-        vector<int> prev{getRow(rowIndex - 1)}, curr(rowIndex + 1);
-        curr[0] = curr[rowIndex] = 1;
-        for (int i = 1; i < rowIndex; i++)
-            curr[i] = prev[i - 1] + prev[i];
-        return curr;
+        vector<int> ans(rowIndex + 1);
+        ans[0] = 1;
+        for (int i = 1; i <= rowIndex; i++)
+        {
+            for (int j = i - 1; j >= 0; j--)
+            {
+                ans[j + 1] += ans[j];
+            }
+        }
+        return ans;
     }
 };
 // @lc code=end
+
+// vector<int> getRow(int rowIndex)
+// {
+//     if (rowIndex == 0)
+//         return {1};
+//     vector<int> prev{getRow(rowIndex - 1)}, curr(rowIndex + 1);
+//     curr[0] = curr[rowIndex] = 1;
+//     for (int i = 1; i < rowIndex; i++)
+//         curr[i] = prev[i - 1] + prev[i];
+//     return curr;
+// }

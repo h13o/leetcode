@@ -44,12 +44,24 @@ public:
     {
         if (!head || !head->next)
             return head;
-        ListNode *temp = head->next;
-        head->next = head->next->next;
-        temp->next = head;
-        head = temp;
+        ListNode *next = head->next;
+        head->next = next->next;
+        next->next = head;
+        head = next;
         head->next->next = swapPairs(head->next->next);
         return head;
     }
 };
 // @lc code=end
+
+// ListNode *swapPairs(ListNode *head)
+// {
+//     if (!head || !head->next)
+//         return head;
+//     ListNode *temp = head->next;
+//     head->next = head->next->next;
+//     temp->next = head;
+//     head = temp;
+//     head->next->next = swapPairs(head->next->next);
+//     return head;
+// }

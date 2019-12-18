@@ -87,39 +87,76 @@ class Solution
 public:
     int openLock(vector<string> &deadends, string target)
     {
-        vector<int> data(10000, -1);
-        data[0] = 0;
+        vector<int> dist(10000, -1);
         for (auto d : deadends)
         {
+            dist[stoi(d)] = INT_MIN;
             if (d == "0000")
                 return -1;
-            data[stoi(d)] = INT_MIN;
         }
+        vector<int> pn{1, -1};
+        dist[0] = 0;
         queue<string> que;
         que.push("0000");
         while (!que.empty())
         {
-            string s = que.front();
-            que.pop();
             for (int i = 0; i < 4; i++)
             {
-                for (int j : {1, -1})
+                for (auto j : pn)
                 {
-                    int dgt = (int)s[i] - (int)'0';
-                    dgt = (dgt + j + 10) % 10;
-                    string t = s;
-                    t[i] = (char)(dgt + (int)'0');
-                    if (data[stoi(t)] == -1)
+                    string temp = que.front();
+                    temp[i] = (temp[i] - (int)'0' + j + 10) % 10 + '0';
+                    if (dist[stoi(temp)] == -1)
                     {
-                        if (t == target)
-                            return data[stoi(s)] + 1;
-                        data[stoi(t)] = data[stoi(s)] + 1;
-                        que.push(t);
+                        dist[stoi(temp)] = dist[stoi(que.front())] + 1;
+                        que.push(temp);
                     }
                 }
             }
+            que.pop();
         }
-        return data[stoi(target)];
+        return dist[stoi(target)];
     }
 };
 // @lc code=end
+
+// class Solution
+// {
+// public:
+//     int openLock(vector<string> &deadends, string target)
+//     {
+//         vector<int> data(10000, -1);
+//         data[0] = 0;
+//         for (auto d : deadends)
+//         {
+//             if (d == "0000")
+//                 return -1;
+//             data[stoi(d)] = INT_MIN;
+//         }
+//         queue<string> que;
+//         que.push("0000");
+//         while (!que.empty())
+//         {
+//             string s = que.front();
+//             que.pop();
+//             for (int i = 0; i < 4; i++)
+//             {
+//                 for (int j : {1, -1})
+//                 {
+//                     int dgt = (int)s[i] - (int)'0';
+//                     dgt = (dgt + j + 10) % 10;
+//                     string t = s;
+//                     t[i] = (char)(dgt + (int)'0');
+//                     if (data[stoi(t)] == -1)
+//                     {
+//                         if (t == target)
+//                             return data[stoi(s)] + 1;
+//                         data[stoi(t)] = data[stoi(s)] + 1;
+//                         que.push(t);
+//                     }
+//                 }
+//             }
+//         }
+//         return data[stoi(target)];
+//     }
+// };
