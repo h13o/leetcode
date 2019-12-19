@@ -49,22 +49,46 @@
 // @lc code=start
 class Solution
 {
-    unordered_map<int, double> memo;
-
 public:
     double myPow(double x, int n)
     {
         if (n == 0)
-            return 1.0;
-        if (memo.find(n) != memo.end())
-            return memo[n];
-        double rest{1.0};
-        if (n % 2 == 1)
-            rest = x;
-        if (n % 2 == -1)
-            rest = 1 / x;
-        memo[n] = rest * myPow(x, n / 2) * myPow(x, n / 2);
-        return memo[n];
+            return 1;
+        double half = myPow(x, n / 2);
+        return half * half * (n % 2 == 1 ? x : (n % 2 == -1 ? 1.0 / x : 1.0));
     }
 };
 // @lc code=end
+
+// class Solution
+// {
+// public:
+//     double myPow(double x, int n)
+//     {
+//         if (n == 0)
+//             return 1;
+//         double half = myPow(x, n / 2);
+//         return half * half * (n % 2 == 1 ? x : (n % 2 == -1 ? 1.0 / x : 1.0));
+//     }
+// };
+
+// class Solution
+// {
+//     unordered_map<int, double> memo;
+
+// public:
+//     double myPow(double x, int n)
+//     {
+//         if (n == 0)
+//             return 1.0;
+//         if (memo.find(n) != memo.end())
+//             return memo[n];
+//         double rest{1.0};
+//         if (n % 2 == 1)
+//             rest = x;
+//         if (n % 2 == -1)
+//             rest = 1 / x;
+//         memo[n] = rest * myPow(x, n / 2) * myPow(x, n / 2);
+//         return memo[n];
+//     }
+// };

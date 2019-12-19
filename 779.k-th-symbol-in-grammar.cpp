@@ -56,12 +56,28 @@ class Solution
 public:
     int kthGrammar(int N, int K)
     {
-        if (K == 1 && N == 1)
+        return rec(K);
+    }
+    int rec(int k)
+    {
+        if (k == 1)
             return 0;
-        int i = kthGrammar(N - 1, (K + 1) / 2);
-        if (i && !(K % 2) || !i && K % 2)
-            return 0;
-        return 1;
+        int v = rec((k + 1) / 2);
+        return (!v && !(k % 2) || v && (k % 2)) ? 1 : 0;
     }
 };
 // @lc code=end
+
+// class Solution
+// {
+// public:
+//     int kthGrammar(int N, int K)
+//     {
+//         if (K == 1 && N == 1)
+//             return 0;
+//         int i = kthGrammar(N - 1, (K + 1) / 2);
+//         if (i && !(K % 2) || !i && K % 2)
+//             return 0;
+//         return 1;
+//     }
+// };

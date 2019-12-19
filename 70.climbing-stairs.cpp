@@ -46,17 +46,35 @@
 // @lc code=start
 class Solution
 {
-    unordered_map<int, int> memo;
-
 public:
     int climbStairs(int n)
     {
-        if (n <= 2)
+        if (n < 4)
             return n;
-        if (memo.find(n) != memo.end())
-            return memo[n];
-        memo[n] = climbStairs(n - 2) + climbStairs(n - 1);
-        return memo[n];
+        int curr{3}, prev{2}, temp;
+        for (int i = 3; i < n; i++)
+        {
+            temp = curr;
+            curr += prev;
+            prev = temp;
+        }
+        return curr;
     }
 };
 // @lc code=end
+
+// class Solution
+// {
+//     unordered_map<int, int> memo;
+
+// public:
+//     int climbStairs(int n)
+//     {
+//         if (n <= 2)
+//             return n;
+//         if (memo.find(n) != memo.end())
+//             return memo[n];
+//         memo[n] = climbStairs(n - 2) + climbStairs(n - 1);
+//         return memo[n];
+//     }
+// };
