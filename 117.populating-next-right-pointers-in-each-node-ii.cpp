@@ -86,23 +86,56 @@ class Solution
 public:
     Node *connect(Node *root)
     {
-        vector<Node *> right_node;
-        find_next(root, 0, right_node);
-        return root;
-    }
-    void find_next(Node *root, int level, vector<Node *> &right_node)
-    {
-        if (!root)
-            return;
-        if (level == right_node.size())
-            right_node.push_back(root);
-        else
+        Node *prev{root};
+        while (prev)
         {
-            right_node[level]->next = root;
-            right_node[level] = root;
+            Node *curr{nullptr}, *currleft{nullptr};
+            while (prev)
+            {
+                if (prev->left)
+                {
+                    if (curr)
+                        curr = curr->next = prev->left;
+                    if (!curr)
+                        currleft = curr = prev->left;
+                }
+                if (prev->right)
+                {
+                    if (curr)
+                        curr = curr->next = prev->right;
+                    if (!curr)
+                        currleft = curr = prev->right;
+                }
+                prev = prev->next;
+            }
+            prev = currleft;
         }
-        find_next(root->left, level + 1, right_node);
-        find_next(root->right, level + 1, right_node);
+        return root;
     }
 };
 // @lc code=end
+
+// class Solution
+// {
+// public:
+//     Node *connect(Node *root)
+//     {
+//         vector<Node *> right_node;
+//         find_next(root, 0, right_node);
+//         return root;
+//     }
+//     void find_next(Node *root, int level, vector<Node *> &right_node)
+//     {
+//         if (!root)
+//             return;
+//         if (level == right_node.size())
+//             right_node.push_back(root);
+//         else
+//         {
+//             right_node[level]->next = root;
+//             right_node[level] = root;
+//         }
+//         find_next(root->left, level + 1, right_node);
+//         find_next(root->right, level + 1, right_node);
+//     }
+// };

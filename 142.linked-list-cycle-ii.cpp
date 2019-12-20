@@ -78,36 +78,61 @@ public:
     ListNode *detectCycle(ListNode *head)
     {
         ListNode *rner{head}, *wker{head};
-        bool check_loop{};
-        int count{};
         while (true)
         {
             if (!rner || !rner->next)
                 return nullptr;
-            if (check_loop)
-                count++;
             rner = rner->next->next;
             wker = wker->next;
             if (rner == wker)
-            {
-                if (check_loop)
-                    break;
-                else
-                    check_loop = true;
-            }
+                break;
         }
-        wker = head;
-        while (true)
+        rner = head;
+        while (rner != wker)
         {
-            ListNode *temp = wker;
-            for (int i = 0; i < count; i++)
-            {
-                temp = temp->next;
-            }
-            if (wker == temp)
-                return wker;
+            rner = rner->next;
             wker = wker->next;
         }
+        return rner;
     }
 };
 // @lc code=end
+
+// class Solution
+// {
+// public:
+//     ListNode *detectCycle(ListNode *head)
+//     {
+//         ListNode *rner{head}, *wker{head};
+//         bool check_loop{};
+//         int count{};
+//         while (true)
+//         {
+//             if (!rner || !rner->next)
+//                 return nullptr;
+//             if (check_loop)
+//                 count++;
+//             rner = rner->next->next;
+//             wker = wker->next;
+//             if (rner == wker)
+//             {
+//                 if (check_loop)
+//                     break;
+//                 else
+//                     check_loop = true;
+//             }
+//         }
+//         wker = head;
+//         while (true)
+//         {
+//             ListNode *temp = wker;
+//             for (int i = 0; i < count; i++)
+//             {
+//                 temp = temp->next;
+//             }
+//             if (wker == temp)
+//                 return wker;
+//             wker = wker->next;
+//         }
+//     }
+// };

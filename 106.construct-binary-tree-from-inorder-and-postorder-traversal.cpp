@@ -51,25 +51,56 @@ class Solution
 public:
     TreeNode *buildTree(vector<int> &inorder, vector<int> &postorder)
     {
-        int idx = postorder.size() - 1;
-        return rec(inorder, postorder, idx, 0, postorder.size());
+        int size{inorder.size()};
+        if (!size)
+            return nullptr;
+        int idx{size - 1};
+        return rec(inorder, postorder, idx, 0, size);
     }
     TreeNode *rec(vector<int> &inorder, vector<int> &postorder, int &idx, int is, int ie)
     {
-        if (ie - is == 0)
-            return nullptr;
-        TreeNode *root = new TreeNode(postorder[idx--]);
-        if (ie - is == 1)
-            return root;
+        int im;
         for (int i = is; i < ie; i++)
         {
-            if (root->val == inorder[i])
+            if (inorder[i] == postorder[idx])
             {
-                root->right = rec(inorder, postorder, idx, i + 1, ie);
-                root->left = rec(inorder, postorder, idx, is, i);
+                im = i;
+                break;
             }
         }
-        return root;
+        TreeNode *curr = new TreeNode(postorder[idx--]);
+        if (im + 1 < ie)
+            curr->right = rec(inorder, postorder, idx, im + 1, ie);
+        if (is < im)
+            curr->left = rec(inorder, postorder, idx, is, im);
+        return curr;
     }
 };
 // @lc code=end
+
+// class Solution
+// {
+// public:
+//     TreeNode *buildTree(vector<int> &inorder, vector<int> &postorder)
+//     {
+//         int idx = postorder.size() - 1;
+//         return rec(inorder, postorder, idx, 0, postorder.size());
+//     }
+//     TreeNode *rec(vector<int> &inorder, vector<int> &postorder, int &idx, int is, int ie)
+//     {
+//         if (ie - is == 0)
+//             return nullptr;
+//         TreeNode *root = new TreeNode(postorder[idx--]);
+//         if (ie - is == 1)
+//             return root;
+//         for (int i = is; i < ie; i++)
+//         {
+//             if (root->val == inorder[i])
+//             {
+//                 root->right = rec(inorder, postorder, idx, i + 1, ie);
+//                 root->left = rec(inorder, postorder, idx, is, i);
+//             }
+//         }
+//         return root;
+//     }
+// };
