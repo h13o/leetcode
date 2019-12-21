@@ -62,86 +62,85 @@ public:
     // Encodes a tree to a single string.
     string serialize(TreeNode *root)
     {
-        if (!root)
-            return "[]";
-        string ans{"["};
+        string str;
         queue<TreeNode *> que;
         que.push(root);
-        while (true)
+        bool check{root ? true : false};
+        int num{1};
+        while (check)
         {
-            bool null_check{true};
-            int size = que.size();
-            for (int i = 0; i < size; i++)
+            check = false;
+            for (int i = 0; i < num; i++)
             {
                 TreeNode *temp = que.front();
                 que.pop();
-                if (temp && (temp->right || temp->left))
+                if (!temp)
                 {
-                    null_check = false;
-                    que.push(temp->left);
-                    que.push(temp->right);
+                    str += "#,";
+                    que.push(nullptr);
+                    que.push(nullptr);
                 }
                 else
                 {
-                    que.push(nullptr);
-                    que.push(nullptr);
+                    str += to_string(temp->val) + ",";
+                    if (temp->left || temp->right)
+                        check = true;
+                    que.push(temp->left);
+                    que.push(temp->right);
                 }
-                ans += temp ? to_string(temp->val) : "null";
-                if (!null_check || i != size - 1)
-                    ans += ",";
             }
-            if (null_check)
-                break;
+            num *= 2;
         }
-        ans += "]";
-        return ans;
+        return str;
     }
 
     // Decodes your encoded data to tree.
-    TreeNode *
-    deserialize(string data)
+    TreeNode *deserialize(string data)
     {
-        if (data == "[]")
+        if (data.empty())
             return nullptr;
-        int idx{}, layer{};
-        int comma{count(data.begin(), data.end(), ',')};
-        vector<TreeNode *> vec;
-        while (comma >= layer * 2 - 1)
-            layer++;
-        while (++idx)
+        int idx{};
+        bool neg{};
+        queue<TreeNode *> que1, que2;
+        while (idx < data.size())
         {
-            if (data[idx] == 'n')
+            if (data[idx] == '#')
             {
-                vec.push_back(nullptr);
-                idx += 4;
-                continue;
-            }
-            int num = 0;
-            while (data[idx] != ',' && data[idx] != ']')
-            {
-                num *= 10;
-                num += (int)data[idx] - (int)'0';
+                que1.push(nullptr);
                 idx++;
             }
-            TreeNode *temp = new TreeNode(num);
-            vec.push_back(temp);
-            if (data[idx] == ']')
-                break;
+            else if (data[idx] == '-')
+                neg = true;
+            else if (isdigit(data[idx]))
+            {
+                int num{};
+                while (isdigit(data[idx]))
+                {
+                    num = num * 10 + data[idx++] - '0';
+                }
+                num = neg ? -num : num;
+                neg = false;
+                que1.push(new TreeNode(num));
+            }
+            idx++;
         }
-        for (int i = 0; i < vec.size(); i++)
+        TreeNode *root = que1.front();
+        que2.push(que1.front());
+        que1.pop();
+        while (!que1.empty())
         {
-            if (i == 0 && !vec[(i - 1) / 2])
-                continue;
-            if (i % 2)
-            {
-                vec[(i - 1) / 2]->left = vec[i];
-            }
-            else
-            {
-                vec[(i - 1) / 2]->right = vec[i];
-            }
+            TreeNode *temp = que2.front();
+            que2.pop();
+            if (temp)
+                temp->left = que1.front();
+            que2.push(que1.front());
+            que1.pop();
+            if (temp)
+                temp->right = que1.front();
+            que2.push(que1.front());
+            que1.pop();
         }
-        return vec[0];
+        return root;
     }
 };
 

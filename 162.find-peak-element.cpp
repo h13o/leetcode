@@ -53,22 +53,42 @@ class Solution
 public:
     int findPeakElement(vector<int> &nums)
     {
-        int l{-1}, r{nums.size()}, m, lv, rv;
+        int l{-1}, r{nums.size()}, m;
         while (r - l > 1)
         {
             m = l + (r - l) / 2;
-            lv = (m - 1 == -1) ? INT_MIN : nums[m - 1];
-            rv = (m + 1 == nums.size()) ? INT_MIN : nums[m + 1];
-            if (lv <= nums[m] && nums[m] >= rv)
+            if ((m - 1 < 0 || m - 1 >= 0 && nums[m - 1] < nums[m]) && (m + 1 >= nums.size() || m + 1 < nums.size() && nums[m] > nums[m + 1]))
                 return m;
-            if (lv <= nums[m] && nums[m] <= rv)
+            if (m - 1 < 0 || m - 1 >= 0 && nums[m - 1] < nums[m])
                 l = m;
-            if (lv >= nums[m] && nums[m] >= rv)
-                r = m;
             else
-                l = m;
+                r = m;
         }
-        return m;
+        return 0;
     }
 };
 // @lc code=end
+
+// class Solution
+// {
+// public:
+//     int findPeakElement(vector<int> &nums)
+//     {
+//         int l{-1}, r{nums.size()}, m, lv, rv;
+//         while (r - l > 1)
+//         {
+//             m = l + (r - l) / 2;
+//             lv = (m - 1 == -1) ? INT_MIN : nums[m - 1];
+//             rv = (m + 1 == nums.size()) ? INT_MIN : nums[m + 1];
+//             if (lv <= nums[m] && nums[m] >= rv)
+//                 return m;
+//             if (lv <= nums[m] && nums[m] <= rv)
+//                 l = m;
+//             if (lv >= nums[m] && nums[m] >= rv)
+//                 r = m;
+//             else
+//                 l = m;
+//         }
+//         return m;
+//     }
+// };

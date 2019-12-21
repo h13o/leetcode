@@ -44,21 +44,29 @@ class Solution
 public:
     int findMin(vector<int> &nums)
     {
-        int N{nums.size()};
-        if (nums[0] <= nums[N - 1])
-            return nums[0];
-        int l{0}, r{N - 1}, m;
-        while (r - l > 1)
-        {
-            m = l + (r - l) / 2;
-            if (nums[m - 1] > nums[m])
-                return nums[m];
-            if (nums[l] < nums[m])
-                l = m;
-            if (nums[m] < nums[r])
-                r = m;
-        }
-        return nums[r];
     }
 };
 // @lc code=end
+
+// class Solution
+// {
+// public:
+//     int findMin(vector<int> &nums)
+//     {
+//         int N{nums.size()};
+//         if (nums[0] <= nums[N - 1])
+//             return nums[0];
+//         int l{0}, r{N - 1}, m;
+//         while (r - l > 1)
+//         {
+//             m = l + (r - l) / 2;
+//             if (nums[m - 1] > nums[m])
+//                 return nums[m];
+//             if (nums[l] < nums[m])
+//                 l = m;
+//             if (nums[m] < nums[r])
+//                 r = m;
+//         }
+//         return nums[r];
+//     }
+// };

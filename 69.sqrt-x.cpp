@@ -45,13 +45,33 @@ class Solution
 public:
     int mySqrt(int x)
     {
-        long long ok{0}, ng{65536}, m;
-        while (ng - ok > 1)
+        if (x < 2)
+            return x;
+        int bg{x}, sm{0}, md;
+        while (bg - sm > 1)
         {
-            m = (ok + ng) / 2;
-            m *m <= x ? ok = m : ng = m;
+            md = sm + (bg - sm) / 2;
+            if (md > x / md)
+                bg = md;
+            else
+                sm = md;
         }
-        return ok;
+        return sm;
     }
 };
 // @lc code=end
+
+// class Solution
+// {
+// public:
+//     int mySqrt(int x)
+//     {
+//         long long ok{0}, ng{65536}, m;
+//         while (ng - ok > 1)
+//         {
+//             m = (ok + ng) / 2;
+//             m *m <= x ? ok = m : ng = m;
+//         }
+//         return ok;
+//     }
+// };
