@@ -44,6 +44,18 @@ class Solution
 public:
     int findMin(vector<int> &nums)
     {
+        if (nums.size() == 1 || nums[0] < nums.back())
+            return nums[0];
+        int bg{0}, sm{nums.size() - 1}, md;
+        while (sm - bg > 1)
+        {
+            md = bg + (sm - bg) / 2;
+            if (nums[bg] < nums[md])
+                bg = md;
+            else
+                sm = md;
+        }
+        return nums[sm];
     }
 };
 // @lc code=end

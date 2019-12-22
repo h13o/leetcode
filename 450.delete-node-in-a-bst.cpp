@@ -73,31 +73,25 @@ class Solution
 public:
     TreeNode *deleteNode(TreeNode *root, int key)
     {
+        if (!root)
+            return root;
         if (root->val > key)
             root->left = deleteNode(root->left, key);
         if (root->val < key)
             root->right = deleteNode(root->right, key);
         if (root->val == key)
-            return deletion(root);
-        return root;
-    }
-    TreeNode *deletion(TreeNode *root)
-    {
-        if (!root->right && !root->left)
-            return nullptr;
-        else if (root->right && !root->left)
-            return root->right;
-        else if (!root->right && root->left)
-            return root->left;
-        else
         {
-            TreeNode *temp{root->right};
+            if (!root->left)
+                return root->right;
+            if (!root->right)
+                return root->left;
+            TreeNode *temp = root->right;
             while (temp->left)
                 temp = temp->left;
             root->val = temp->val;
-            temp = deletion(temp);
-            return root;
+            root->right = deleteNode(root->right, temp->val);
         }
+        return root;
     }
 };
 // @lc code=end

@@ -47,24 +47,46 @@ class Solution
 public:
     int getMoneyAmount(int n)
     {
-        if (n <= 3) return n-1;
-        vector<vector<int>> dp (n, vector<int>(n, -1));
-        for (int i=0; i<n; i++)
-            dp[i][i]=0;
-        for (int i=0; i<n-1; i++)
-            dp[i][i+1]=i+1;
-        for (int i=0; i<n-2; i++)
-            dp[i][i+2]=i+2;
-        return rec(0, n-1, dp);
+        vector<vector<int>> data(n, vector<int>(n));
+        return rec(1, n, data);
     }
-    int rec(int r, int c, vector<vector<int>> &dp){
-        if (dp[r][c] != -1) return dp[r][c];
+    int rec(int s, int e, vector<vector<int>> &data)
+    {
+        if (s >= e)
+            return 0;
+        if (data[s - 1][e - 1] != 0)
+            return data[s - 1][e - 1];
         int min_val{INT_MAX};
-        for (int i= r+1; i<c; i++){
-            min_val = min(min_val, i+1 + max(rec(r,i-1, dp),rec(i+1,c,dp)));
-        }
-        dp[r][c] = min_val;
-        return dp[r][c];
+        for (int i = s; i < e; i++)
+            min_val = min(min_val, max(rec(s, i - 1, data) + i, i + rec(i + 1, e, data)));
+        data[s - 1][e - 1] = min_val;
+        return data[s - 1][e - 1];
     }
 };
 // @lc code=end
+
+// class Solution
+// {
+// public:
+//     int getMoneyAmount(int n)
+//     {
+//         if (n <= 3) return n-1;
+//         vector<vector<int>> dp (n, vector<int>(n, -1));
+//         for (int i=0; i<n; i++)
+//             dp[i][i]=0;
+//         for (int i=0; i<n-1; i++)
+//             dp[i][i+1]=i+1;
+//         for (int i=0; i<n-2; i++)
+//             dp[i][i+2]=i+2;
+//         return rec(0, n-1, dp);
+//     }
+//     int rec(int r, int c, vector<vector<int>> &dp){
+//         if (dp[r][c] != -1) return dp[r][c];
+//         int min_val{INT_MAX};
+//         for (int i= r+1; i<c; i++){
+//             min_val = min(min_val, i+1 + max(rec(r,i-1, dp),rec(i+1,c,dp)));
+//         }
+//         dp[r][c] = min_val;
+//         return dp[r][c];
+//     }
+// };
